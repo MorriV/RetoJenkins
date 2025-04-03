@@ -1,14 +1,32 @@
 pipeline {
     agent { label 'agent1' }
+
+    environment {
+        IMAGE_NAME = 'morri/todoapp:latest' // cámbialo si tienes Docker Hub
+    }
+
     stages {
-        stage('Inicio') {
+        stage('Clonar') {
             steps {
-                echo '¡Pipeline iniciado desde Jenkinsfile!'
+                echo 'Clonando proyecto desde GitHub...'
             }
         }
-        stage('Comando de prueba') {
+
+        stage('Compilar con Maven') {
             steps {
-                sh 'echo "Este es un script ejecutado por el agente Docker."'
+                sh 'mvn clean package'
+            }
+        }
+
+        stage('Construir imagen Docker') {
+            steps {
+                sh 'docker build -t $IMAGE_NAME .'
+            }
+        }
+
+        stage('Finalizado') {
+            steps {
+                echo 'Pipeline finalizado correctamente.'
             }
         }
     }
