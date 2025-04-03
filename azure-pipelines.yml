@@ -1,0 +1,24 @@
+# azure-pipelines.yml
+pool:
+  vmImage: ubuntu-latest
+
+trigger:
+  - main
+
+resources:
+  repositories:
+    - repository: 'templetes'
+      type: git
+      name: templates-project/templetes  # Proyecto/Repositorio
+      ref: refs/heads/main
+    - repository: 'todoapp'
+      type: git
+      name: DevOpsEjemplo/todoapp     # Proyecto/Repositorio
+      ref: refs/heads/main
+
+extends:
+  template: springboot-ci-template.yml@templetes
+  parameters:
+    repoName: 'todoapp'
+    mavenGoals: 'clean package'
+    environment: 'qa'
