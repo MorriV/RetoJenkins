@@ -6,6 +6,16 @@ pipeline {
     }
 
     stages {
+
+        stage('Instalar Maven') {
+            steps {
+                sh '''
+                  apt-get update
+                  apt-get install -y maven
+                '''
+            }
+        }
+        
         stage('Clonar') {
             steps {
                 echo 'Clonando proyecto desde GitHub...'
